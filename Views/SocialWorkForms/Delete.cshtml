@@ -1,0 +1,24 @@
+@model SocialWorkForm
+@{
+    ViewData["Title"] = "Delete Form";
+}
+
+<div class="alert alert-danger">
+    <h1 class="h4">Delete Form #@Model.Id</h1>
+    <p>This will remove the form and all related attachments. This action cannot be undone.</p>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <p><strong>Template:</strong> @Model.TemplateCode - @Model.TemplateName</p>
+        <p><strong>Client:</strong> @Model.ClientFullName</p>
+        <p><strong>Case Reference:</strong> @Model.CaseReference</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post" class="d-flex gap-2">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+</form>

@@ -1,0 +1,79 @@
+@model OutreachLetter
+@{
+    ViewData["Title"] = "Outreach Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Outreach Letter #@Model.Id</h1>
+    <div class="d-flex gap-2">
+        <a asp-action="Print" asp-route-id="@Model.Id" target="_blank" class="btn btn-outline-dark">Print View</a>
+        <a asp-action="DownloadSummary" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Download TXT</a>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6"><strong>Type:</strong> @Model.OutreachType</div>
+            <div class="col-md-6"><strong>Status:</strong> @Model.Status</div>
+            <div class="col-md-6"><strong>Recipient:</strong> @Model.RecipientName</div>
+            <div class="col-md-6"><strong>Organisation:</strong> @(Model.RecipientOrganisation ?? "N/A")</div>
+            <div class="col-md-6"><strong>Email:</strong> @(Model.RecipientEmail ?? "N/A")</div>
+            <div class="col-md-6"><strong>Created By:</strong> @(Model.CreatedByUser?.FullName ?? "Unknown")</div>
+            <div class="col-12"><strong>Subject:</strong> @Model.Subject</div>
+            <div class="col-12">
+                <strong>Letter Body:</strong>
+                <pre class="bg-light p-3 rounded border mt-2">@Model.LetterBody</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">Attachments</div>
+    <div class="card-body">
+        @if (!Model.Attachments.Any())
+        {
+            <p class="text-muted mb-0">No attachments uploaded yet.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>File</th>
+                            <th>Size (KB)</th>
+                            <th>Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var file in Model.Attachments.OrderByDescending(a => a.UploadedAtUtc))
+                        {
+                            <tr>
+                                <td>@file.OriginalFileName</td>
+                                <td>@Math.Round(file.FileSizeBytes / 1024.0, 2)</td>
+                                <td>@file.UploadedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>
+                                    <a asp-action="DownloadAttachment" asp-route-id="@file.Id" class="btn btn-sm btn-outline-primary">Download</a>
+                                    <form asp-action="DeleteAttachment" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@file.Id" />
+                                        <input type="hidden" name="outreachId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this file?');">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Letter</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Letter</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>

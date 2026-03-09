@@ -1,0 +1,83 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="mb-4">
+    <h1 class="h3">Welcome, @Model.FullName</h1>
+    <p class="text-muted">Role: <strong>@Model.Role</strong></p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-primary h-100">
+            <div class="card-body">
+                <h2 class="h6 text-primary">Active Forms</h2>
+                <p class="display-6">@Model.ActiveForms</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-success h-100">
+            <div class="card-body">
+                <h2 class="h6 text-success">Completed Forms</h2>
+                <p class="display-6">@Model.CompletedForms</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-dark h-100">
+            <div class="card-body">
+                <h2 class="h6 text-dark">Submitted Forms</h2>
+                <p class="display-6">@Model.SubmittedForms</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Social Work Documentation</h2>
+                <p class="text-muted">Create, update, and submit forms (Form 2, 7, 33, 56, 77) with attachments.</p>
+                <a class="btn btn-primary" asp-controller="SocialWorkForms" asp-action="Index">Open Forms Module</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">External Service Queries</h2>
+                <p class="text-muted">Open queries waiting for social worker response: <strong>@Model.OpenExternalQueries</strong></p>
+                <a class="btn btn-success" asp-controller="ExternalQuery" asp-action="Index">Manage Queries</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Fundraising and Marketing</h2>
+                <p class="text-muted">Draft invitations, donation requests, and funding proposals with printable/downloadable output.</p>
+                <p class="mb-3">Draft or ready letters: <strong>@Model.DraftOutreachLetters</strong></p>
+                <a class="btn btn-warning" asp-controller="Outreach" asp-action="Index">Open Outreach Module</a>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.IsAdmin)
+    {
+        <div class="col-md-6">
+            <div class="card h-100 border-danger">
+                <div class="card-body">
+                    <h2 class="h5 text-danger">Admin Tools</h2>
+                    <p class="text-muted">Access exports, user management, and file oversight.</p>
+                    <a class="btn btn-danger" asp-controller="Admin" asp-action="Index">Open Admin Tools</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

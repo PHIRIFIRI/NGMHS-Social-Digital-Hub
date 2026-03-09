@@ -1,0 +1,49 @@
+@model IEnumerable<AdminFileViewModel>
+@{
+    ViewData["Title"] = "Admin - Files";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">System Files</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to Admin</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Module</th>
+                <th>Title</th>
+                <th>Uploaded By</th>
+                <th>Uploaded</th>
+                <th>Size (KB)</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="6" class="text-center text-muted">No tracked files available.</td></tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Module</td>
+                        <td>@item.Title</td>
+                        <td>@item.UploadedBy</td>
+                        <td>@item.UploadedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@Math.Round(item.SizeBytes / 1024.0, 2)</td>
+                        <td>
+                            <a asp-controller="@item.DownloadController"
+                               asp-action="@item.DownloadAction"
+                               asp-route-id="@item.FileId"
+                               class="btn btn-sm btn-outline-primary">Download</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

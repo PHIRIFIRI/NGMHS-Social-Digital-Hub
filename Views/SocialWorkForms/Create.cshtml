@@ -1,0 +1,103 @@
+@model SocialWorkFormInputViewModel
+@{
+    ViewData["Title"] = "Create Social Work Form";
+    var templateJson = System.Text.Json.JsonSerializer.Serialize(Model.TemplateBodies);
+}
+
+<h1 class="h3 mb-3">Create Social Work Form</h1>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="TemplateCode" class="form-label"></label>
+            <select asp-for="TemplateCode" asp-items="Model.TemplateOptions" class="form-select" id="templateSelect"></select>
+            <span asp-validation-for="TemplateCode" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Status" class="form-label"></label>
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<WorkFormStatus>()" class="form-select"></select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="ClientFullName" class="form-label"></label>
+            <input asp-for="ClientFullName" class="form-control" />
+            <span asp-validation-for="ClientFullName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="ClientReferenceNumber" class="form-label"></label>
+            <input asp-for="ClientReferenceNumber" class="form-control" />
+            <span asp-validation-for="ClientReferenceNumber" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="CaseReference" class="form-label"></label>
+            <input asp-for="CaseReference" class="form-control" />
+            <span asp-validation-for="CaseReference" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="DepartmentDestination" class="form-label"></label>
+            <select asp-for="DepartmentDestination" class="form-select">
+                @foreach (var department in Model.Departments)
+                {
+                    if (Model.DepartmentDestination == department)
+                    {
+                        <option value="@department" selected="selected">@department</option>
+                    }
+                    else
+                    {
+                        <option value="@department">@department</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="DepartmentDestination" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <label asp-for="FormBody" class="form-label"></label>
+            <textarea asp-for="FormBody" class="form-control" rows="12" id="formBody"></textarea>
+            <span asp-validation-for="FormBody" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <label asp-for="InternalNotes" class="form-label"></label>
+            <textarea asp-for="InternalNotes" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="InternalNotes" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Attachments (PDF, image, DOC/DOCX)</label>
+            <input type="file" name="files" multiple class="form-control" accept=".pdf,.png,.jpg,.jpeg,.gif,.doc,.docx" />
+            <div class="form-text">Max file size from configuration: 10MB each.</div>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Save Form</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const templateBodies = @Html.Raw(templateJson);
+        const templateSelect = document.getElementById("templateSelect");
+        const bodyInput = document.getElementById("formBody");
+
+        function applyTemplateIfEmpty() {
+            const selected = templateSelect.value;
+            if (!bodyInput.value.trim() && templateBodies[selected]) {
+                bodyInput.value = templateBodies[selected];
+            }
+        }
+
+        templateSelect.addEventListener("change", applyTemplateIfEmpty);
+        applyTemplateIfEmpty();
+    </script>
+}

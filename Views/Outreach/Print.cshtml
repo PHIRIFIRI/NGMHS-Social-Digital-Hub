@@ -1,0 +1,40 @@
+@model OutreachLetter
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Print Outreach #@Model.Id</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; color: #1a1a1a; }
+        .header { border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 16px; }
+        .row { margin-bottom: 8px; }
+        .label { font-weight: 700; }
+        pre { white-space: pre-wrap; border: 1px solid #ccc; padding: 12px; background: #f8f8f8; }
+        @@media print {
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NGMHS Outreach Letter</h1>
+        <div>Reference ID: @Model.Id</div>
+    </div>
+
+    <div class="row"><span class="label">Type:</span> @Model.OutreachType</div>
+    <div class="row"><span class="label">Status:</span> @Model.Status</div>
+    <div class="row"><span class="label">Recipient:</span> @Model.RecipientName</div>
+    <div class="row"><span class="label">Organisation:</span> @(Model.RecipientOrganisation ?? "N/A")</div>
+    <div class="row"><span class="label">Email:</span> @(Model.RecipientEmail ?? "N/A")</div>
+    <div class="row"><span class="label">Subject:</span> @Model.Subject</div>
+
+    <h3>Letter Body</h3>
+    <pre>@Model.LetterBody</pre>
+
+    <button class="no-print" onclick="window.print()">Print</button>
+</body>
+</html>
+

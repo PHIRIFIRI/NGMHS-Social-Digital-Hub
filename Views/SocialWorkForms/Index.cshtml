@@ -1,0 +1,97 @@
+@model IEnumerable<SocialWorkForm>
+@{
+    ViewData["Title"] = "Social Work Forms";
+    var statusFilter = ViewData["StatusFilter"] as string;
+    var search = ViewData["Search"] as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Social Work Forms</h1>
+    <a asp-action="Create" class="btn btn-primary">Create New Form</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input name="search" value="@search" class="form-control" placeholder="Search client, case reference, template" />
+    </div>
+    <div class="col-md-3">
+        <select name="statusFilter" class="form-select">
+            <option value="">All statuses</option>
+            @foreach (var status in Enum.GetValues<WorkFormStatus>())
+            {
+                if (statusFilter == status.ToString())
+                {
+                    <option value="@status" selected="selected">@status</option>
+                }
+                else
+                {
+                    <option value="@status">@status</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-outline-primary">Apply Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Template</th>
+                <th>Client</th>
+                <th>Case Reference</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th>Created By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted">No forms found.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td><strong>@item.TemplateCode</strong><br /><small class="text-muted">@item.TemplateName</small></td>
+                        <td>@item.ClientFullName</td>
+                        <td>@item.CaseReference</td>
+                        <td>
+                            <span class="badge @GetStatusBadge(item.Status)">@item.Status</span>
+                        </td>
+                        <td>@item.UpdatedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@(item.CreatedByUser?.FullName ?? "Unknown")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@functions {
+    private static string GetStatusBadge(WorkFormStatus status)
+    {
+        return status switch
+        {
+            WorkFormStatus.Active => "bg-warning text-dark",
+            WorkFormStatus.Completed => "bg-success",
+            WorkFormStatus.Submitted => "bg-primary",
+            _ => "bg-secondary"
+        };
+    }
+}

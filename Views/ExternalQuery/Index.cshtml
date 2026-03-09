@@ -1,0 +1,90 @@
+@model IEnumerable<ExternalQuery>
+@{
+    ViewData["Title"] = "External Queries";
+    var statusFilter = ViewData["StatusFilter"] as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">External Queries</h1>
+    <a asp-action="Create" class="btn btn-outline-success">Public Query Form</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <select name="statusFilter" class="form-select">
+            <option value="">All statuses</option>
+            @foreach (var status in Enum.GetValues<ExternalQueryStatus>())
+            {
+                if (statusFilter == status.ToString())
+                {
+                    <option value="@status" selected="selected">@status</option>
+                }
+                else
+                {
+                    <option value="@status">@status</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-outline-primary">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Submitted</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted">No queries found.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                        <td>@item.QuerySubject</td>
+                        <td><span class="badge @GetBadge(item.Status)">@item.Status</span></td>
+                        <td>@(item.AssignedToUser?.FullName ?? "Unassigned")</td>
+                        <td>@item.SubmittedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Manage</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@functions {
+    private static string GetBadge(ExternalQueryStatus status)
+    {
+        return status switch
+        {
+            ExternalQueryStatus.New => "bg-danger",
+            ExternalQueryStatus.InReview => "bg-warning text-dark",
+            ExternalQueryStatus.Responded => "bg-success",
+            ExternalQueryStatus.Closed => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+}

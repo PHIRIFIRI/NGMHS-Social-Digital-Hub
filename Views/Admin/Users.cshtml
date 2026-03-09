@@ -1,0 +1,46 @@
+@model IEnumerable<User>
+@{
+    ViewData["Title"] = "Admin - Users";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">User Management</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to Admin</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Created</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <span class="badge @(user.Role == "Admin" ? "bg-danger" : "bg-primary")">@user.Role</span>
+                    </td>
+                    <td>@user.CreatedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <form asp-action="ToggleAdminRole" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-dark">
+                                @(user.Role == "Admin" ? "Set SocialWorker" : "Set Admin")
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,47 @@
+@model SocialWorkForm
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Print Form #@Model.Id</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; color: #1a1a1a; }
+        .header { border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 16px; }
+        .row { margin-bottom: 8px; }
+        .label { font-weight: 700; }
+        pre { white-space: pre-wrap; border: 1px solid #ccc; padding: 12px; background: #f8f8f8; }
+        @@media print {
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NGMHS Social Work Form</h1>
+        <div>Form ID: @Model.Id</div>
+    </div>
+
+    <div class="row"><span class="label">Template:</span> @Model.TemplateCode - @Model.TemplateName</div>
+    <div class="row"><span class="label">Client:</span> @Model.ClientFullName</div>
+    <div class="row"><span class="label">Client Reference:</span> @(Model.ClientReferenceNumber ?? "N/A")</div>
+    <div class="row"><span class="label">Case Reference:</span> @Model.CaseReference</div>
+    <div class="row"><span class="label">Department:</span> @Model.DepartmentDestination</div>
+    <div class="row"><span class="label">Status:</span> @Model.Status</div>
+    <div class="row"><span class="label">Generated:</span> @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</div>
+
+    <h3>Form Body</h3>
+    <pre>@Model.FormBody</pre>
+
+    @if (!string.IsNullOrWhiteSpace(Model.InternalNotes))
+    {
+        <h3>Internal Notes</h3>
+        <pre>@Model.InternalNotes</pre>
+    }
+
+    <button class="no-print" onclick="window.print()">Print</button>
+</body>
+</html>
+

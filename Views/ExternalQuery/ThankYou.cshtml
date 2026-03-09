@@ -1,0 +1,11 @@
+@{
+    ViewData["Title"] = "Query Submitted";
+}
+
+<div class="alert alert-success">
+    <h1 class="h4">Thank You</h1>
+    <p>Your query has been submitted successfully. A social worker will review it and respond.</p>
+</div>
+
+<a asp-action="Create" class="btn btn-primary">Submit Another Query</a>
+<a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary">Staff Login</a>

@@ -1,0 +1,24 @@
+@model OutreachLetter
+@{
+    ViewData["Title"] = "Delete Outreach";
+}
+
+<div class="alert alert-danger">
+    <h1 class="h4">Delete Outreach Letter #@Model.Id</h1>
+    <p>This will delete the letter and all attachments permanently.</p>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <p><strong>Type:</strong> @Model.OutreachType</p>
+        <p><strong>Recipient:</strong> @Model.RecipientName</p>
+        <p><strong>Subject:</strong> @Model.Subject</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post" class="d-flex gap-2">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+</form>

@@ -1,0 +1,115 @@
+@model SocialWorkForm
+@{
+    ViewData["Title"] = "Form Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Form #@Model.Id Details</h1>
+    <div class="d-flex gap-2">
+        <a asp-action="Print" asp-route-id="@Model.Id" target="_blank" class="btn btn-outline-dark">Print View</a>
+        <a asp-action="DownloadSummary" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Download TXT</a>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <strong>Template:</strong> @Model.TemplateCode - @Model.TemplateName
+            </div>
+            <div class="col-md-6">
+                <strong>Status:</strong> <span class="badge @GetStatusBadge(Model.Status)">@Model.Status</span>
+            </div>
+            <div class="col-md-6">
+                <strong>Client:</strong> @Model.ClientFullName
+            </div>
+            <div class="col-md-6">
+                <strong>Client Reference:</strong> @(Model.ClientReferenceNumber ?? "N/A")
+            </div>
+            <div class="col-md-6">
+                <strong>Case Reference:</strong> @Model.CaseReference
+            </div>
+            <div class="col-md-6">
+                <strong>Department:</strong> @Model.DepartmentDestination
+            </div>
+            <div class="col-md-6">
+                <strong>Created By:</strong> @(Model.CreatedByUser?.FullName ?? "Unknown")
+            </div>
+            <div class="col-md-6">
+                <strong>Updated:</strong> @Model.UpdatedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+            </div>
+        </div>
+
+        <hr />
+        <h2 class="h5">Form Body</h2>
+        <pre class="bg-light p-3 rounded border">@Model.FormBody</pre>
+
+        @if (!string.IsNullOrWhiteSpace(Model.InternalNotes))
+        {
+            <h2 class="h5 mt-3">Internal Notes</h2>
+            <pre class="bg-light p-3 rounded border">@Model.InternalNotes</pre>
+        }
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">Attachments</div>
+    <div class="card-body">
+        @if (!Model.Attachments.Any())
+        {
+            <p class="text-muted mb-0">No attachments uploaded yet.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>File</th>
+                            <th>Size (KB)</th>
+                            <th>Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var file in Model.Attachments.OrderByDescending(a => a.UploadedAtUtc))
+                        {
+                            <tr>
+                                <td>@file.OriginalFileName</td>
+                                <td>@Math.Round(file.FileSizeBytes / 1024.0, 2)</td>
+                                <td>@file.UploadedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>
+                                    <a asp-action="DownloadAttachment" asp-route-id="@file.Id" class="btn btn-sm btn-outline-primary">Download</a>
+                                    <form asp-action="DeleteAttachment" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@file.Id" />
+                                        <input type="hidden" name="formId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this file?');">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Form</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Form</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>
+
+@functions {
+    private static string GetStatusBadge(WorkFormStatus status)
+    {
+        return status switch
+        {
+            WorkFormStatus.Active => "bg-warning text-dark",
+            WorkFormStatus.Completed => "bg-success",
+            WorkFormStatus.Submitted => "bg-primary",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Admin Overview";
+}
+
+<h1 class="h3 mb-4">Admin Overview</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-primary h-100">
+            <div class="card-body">
+                <h2 class="h6 text-primary">Total Users</h2>
+                <p class="display-6">@ViewBag.TotalUsers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-success h-100">
+            <div class="card-body">
+                <h2 class="h6 text-success">Social Work Forms</h2>
+                <p class="display-6">@ViewBag.TotalForms</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-warning h-100">
+            <div class="card-body">
+                <h2 class="h6 text-warning">External Queries</h2>
+                <p class="display-6">@ViewBag.TotalExternalQueries</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-info h-100">
+            <div class="card-body">
+                <h2 class="h6 text-info">Outreach Records</h2>
+                <p class="display-6">@ViewBag.TotalOutreachLetters</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-dark h-100">
+            <div class="card-body">
+                <h2 class="h6 text-dark">Tracked Files</h2>
+                <p class="display-6">@ViewBag.TotalFiles</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">Admin Actions</div>
+    <div class="card-body d-flex flex-wrap gap-2">
+        <a asp-action="Users" class="btn btn-outline-primary">Manage Users</a>
+        <a asp-action="Files" class="btn btn-outline-dark">File Access</a>
+        <a asp-action="ExportFormsCsv" class="btn btn-outline-success">Export Forms CSV</a>
+        <a asp-action="ExportQueriesCsv" class="btn btn-outline-warning">Export Queries CSV</a>
+        <a asp-action="ExportOutreachCsv" class="btn btn-outline-info">Export Outreach CSV</a>
+    </div>
+</div>

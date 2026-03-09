@@ -1,0 +1,50 @@
+:root {
+    --ngmhs-primary: #0b4f6c;
+    --ngmhs-accent: #149f83;
+}
+
+html {
+    font-size: 15px;
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #f7f9fb;
+    color: #132230;
+    padding-bottom: 80px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+.card {
+    border-radius: 0.8rem;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.92rem;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+footer {
+    background: #ffffff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 992px) {
+    html {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,109 @@
+@model IEnumerable<OutreachLetter>
+@{
+    ViewData["Title"] = "Outreach Letters";
+    var statusFilter = ViewData["StatusFilter"] as string;
+    var typeFilter = ViewData["TypeFilter"] as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Fundraising and Marketing Outreach</h1>
+    <a asp-action="Create" class="btn btn-primary">Create Outreach Letter</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3">
+        <select name="statusFilter" class="form-select">
+            <option value="">All statuses</option>
+            @foreach (var status in Enum.GetValues<OutreachStatus>())
+            {
+                if (statusFilter == status.ToString())
+                {
+                    <option value="@status" selected="selected">@status</option>
+                }
+                else
+                {
+                    <option value="@status">@status</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="typeFilter" class="form-select">
+            <option value="">All types</option>
+            @foreach (var type in Enum.GetValues<OutreachType>())
+            {
+                if (typeFilter == type.ToString())
+                {
+                    <option value="@type" selected="selected">@type</option>
+                }
+                else
+                {
+                    <option value="@type">@type</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-outline-primary">Apply</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Recipient</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Created By</th>
+                <th>Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="text-center text-muted">No outreach records found.</td></tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.OutreachType</td>
+                        <td>@item.RecipientName</td>
+                        <td>@item.Subject</td>
+                        <td><span class="badge @StatusBadge(item.Status)">@item.Status</span></td>
+                        <td>@(item.CreatedByUser?.FullName ?? "Unknown")</td>
+                        <td>@item.UpdatedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@functions {
+    private static string StatusBadge(OutreachStatus status)
+    {
+        return status switch
+        {
+            OutreachStatus.Draft => "bg-secondary",
+            OutreachStatus.ReadyToSend => "bg-warning text-dark",
+            OutreachStatus.Sent => "bg-success",
+            OutreachStatus.Printed => "bg-primary",
+            _ => "bg-secondary"
+        };
+    }
+}

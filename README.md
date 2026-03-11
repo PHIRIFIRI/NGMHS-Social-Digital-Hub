@@ -5,10 +5,11 @@
 <img width="1365" height="664" alt="Screenshot 2026-03-10 094819" src="https://github.com/user-attachments/assets/720ad058-da48-4b10-b691-16871a6140ef" />
 
 ##Dashboard
-<img width="1303" height="584" alt="Screenshot 2026-03-10 094855" src="https://github.com/user-attachments/assets/3b07323b-eed0-4362-85a2-0024eaa7a46e" />
+<img width="1303" height="584" alt="Screenshot 2026-03-10 094855" src="https://github.com/user-attachments/assets/e60c4449-9f51-47ef-a705-c796471acda7" />
+
 
 social work forms
-<img width="1303" height="584" alt="Screenshot 2026-03-10 094855" src="https://github.com/user-attachments/assets/cdae8119-f81b-4aa1-aea3-ce4eef286e90" />
+<img width="1365" height="654" alt="Screenshot 2026-03-10 094920" src="https://github.com/user-attachments/assets/dca369f7-94b3-4309-9c1a-b22b945f0bd9" />
 
 Create external queriea
 
@@ -18,7 +19,7 @@ More forms
 <img width="1365" height="676" alt="Screenshot 2026-03-10 095026" src="https://github.com/user-attachments/assets/31884f23-d95b-4022-a300-16e8254fe3fb" />
 
 View,  edit, update and delete forms
-<img width="1365" height="667" alt="Screenshot 2026-03-10 094909" src="https://github.com/user-attachments/assets/1d6f77b9-0ae9-405e-aeb8-40828c8d9ec2" />
+<img width="1362" height="767" alt="Screenshot 2026-03-10 125244" src="https://github.com/user-attachments/assets/8a21ef4c-a64a-442c-add8-2e28129a8daa" />
 
 Ms  Azure DevOps Architecture
 <img width="1360" height="767" alt="Screenshot 2026-03-10 111511" src="https://github.com/user-attachments/assets/d1e5ea4f-3052-4b50-b111-8fbe0cccd56f" />

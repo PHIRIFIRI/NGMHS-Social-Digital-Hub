@@ -23,13 +23,13 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore NGMHS.sln
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build NGMHS.sln --configuration Release --no-restore
 
     - name: Publish
-      run: dotnet publish -c Release -o publish
+      run: dotnet publish NGMHS.sln -c Release -o publish
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2

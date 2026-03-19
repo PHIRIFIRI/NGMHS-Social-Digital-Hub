@@ -1,7 +1,7 @@
-*NGMHS Social-Digital-Hub
+*NGMHS Social-Digital-Hub*
 This web application digitizes social worker operations by replacing manual paperwork with an online system for managing:  Social worker forms  Public queries  Case management  Administrative access  The system allows staff to work remotely while maintaining secure access to organizational resources.
 
-*Technologies Used
+*Technologies Used*
 
 ASP.NET MVC
 
@@ -15,13 +15,13 @@ Visual Studio 2022
 
 GitHub
 
-*System Architecture
+*System Architecture*
 
 Client → Browser
 Server → ASP.NET MVC Application
 Database → MySQL
 
-*Features
+*Features*
 
 User authentication
 

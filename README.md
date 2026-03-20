@@ -33,7 +33,7 @@ Admin dashboard
 
 Database storage
 
-View the following screenshots to get an overview of the web app.
+Check the following screenshots to get an overview of the web app.
 
 ## Registration
 <img width="1364" height="638" alt="Screenshot 2026-03-10 094620" src="https://github.com/user-attachments/assets/2f3b0b54-7389-48bc-aeb0-16227d97cbfe" />
